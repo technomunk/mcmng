@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "mcmng"
 version = "0.1.0"
-description = ""
+description = "Command line based minecraft server manager for individual admins."
 authors = ["Technomunk <thegriffones@gmail.com>"]
 license = "MIT"
 readme = "readme.md"
