@@ -1,18 +1,27 @@
 [tool.poetry]
 name = "mcmng"
-version = "0.1.0"
+version = "0.0.0"
 description = ""
 authors = ["Technomunk <thegriffones@gmail.com>"]
-readme = "README.md"
+license = "MIT"
+readme = "readme.md"
+homepage = "https://github.com/technomunk/mcmng"
+repository = "https://github.com/technomunk/mcmng"
+keywords = ["minecraft", "manager", "backup"]
+classifiers = [
+    "Intended Audience :: System Administrators",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+]
 
 [tool.poetry.dependencies]
 python = "^3.10"
 
 [tool.poetry.group.dev.dependencies]
-mypy = "^0.982"
-flake8 = "^5.0.4"
-pylint = "^2.15.4"
 black = "^22.10.0"
+flake8 = "^5.0.4"
+mypy = "^0.982"
+pylint = "^2.15.4"
 
 [build-system]
 requires = ["poetry-core"]
