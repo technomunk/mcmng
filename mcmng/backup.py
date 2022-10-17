@@ -49,7 +49,7 @@ def delete_oldest_backups(backup_dir: str, keep: int = 1) -> list[str]:
 
 def newest_backup_time(backup_dir: str) -> datetime | None:
     """Get the newest backup age in provided folder"""
-    backups = filter(partial(_is_backup, backup_dir), listdir(backup_dir))
+    backups = list(filter(partial(_is_backup, backup_dir), listdir(backup_dir)))
     if not backups:
         return None
     age = min(path.getmtime(path.join(backup_dir, filename)) for filename in backups)
