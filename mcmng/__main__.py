@@ -3,7 +3,6 @@ Command line based [minecraft](https://www.minecraft.net/en-us)
 server manager for individual admins.
 """
 from datetime import datetime, timedelta
-from email.policy import default
 from os import makedirs
 from time import sleep
 
