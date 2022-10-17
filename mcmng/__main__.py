@@ -3,6 +3,7 @@ Command line based [minecraft](https://www.minecraft.net/en-us)
 server manager for individual admins.
 """
 from datetime import datetime, timedelta
+from logging import getLogger
 from os import makedirs
 from time import sleep
 
@@ -10,6 +11,8 @@ import click
 from mcstatus import JavaServer
 
 from mcmng.backup import backup, delete_oldest_backups, newest_backup_time
+
+logger = getLogger(__name__)
 
 
 @click.group()
@@ -79,15 +82,19 @@ def continuous_backup(
             activity_since_last_backup = server.status().players.online > 0
 
         if activity_since_last_backup:
+            logger.debug("found player activity")
             now = datetime.now()
             backup_time = last_backup_time + timedelta(minutes=period)
             if backup_time > now:
-                backup(filepath, world, backup_dir)
+                backup_filename = backup(filepath, world, backup_dir)
+                logger.info("Made backup of %s: %s", filepath, backup_filename)
                 last_backup_time = now
                 activity_since_last_backup = False
                 if max_backups > 0:
-                    delete_oldest_backups(backup_dir, keep=max_backups)
+                    removed_backups = delete_oldest_backups(backup_dir, keep=max_backups)
+                    logger.info("removed backups: %s", removed_backups)
             else:
+                logger.info("waiting until %s", backup_time)
                 sleep((backup_time - now).total_seconds())
                 continue
 
