@@ -3,6 +3,7 @@ Command line based [minecraft](https://www.minecraft.net/en-us)
 server manager for individual admins.
 """
 from datetime import datetime, timedelta
+from email.policy import default
 from os import makedirs
 from time import sleep
 
@@ -24,6 +25,7 @@ def cli() -> None:
     "--backup-dir",
     "-d",
     type=click.Path(exists=False, dir_okay=True, file_okay=False),
+    default="backups",
 )
 @click.option(
     "--world",
