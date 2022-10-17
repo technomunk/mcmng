@@ -4,6 +4,7 @@ server manager for individual admins.
 """
 from datetime import datetime, timedelta
 from logging import DEBUG, getLogger
+import logging
 from os import makedirs
 from time import sleep
 
@@ -114,5 +115,8 @@ def _parse_address(address: str) -> tuple[str, int | None]:
 
 
 if __name__ == "__main__":
-    logger.setLevel(DEBUG)
+    logging.basicConfig(
+        format="%(asctime)s:%(levelname)s:%(name)s:%(funcName)s: %(message)s",
+        level=logging.DEBUG,
+    )
     cli()
