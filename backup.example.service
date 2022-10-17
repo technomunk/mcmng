@@ -1,0 +1,13 @@
+[Unit]
+Description=continous backups
+Wants=network-online.target
+After=network.target network-online.target
+
+[Service]
+User=minecraft
+Group=minecraft
+
+ExecStart=poetry run mcmng continuous-backup server localhost
+
+[Install]
+WantedBy=multi-user.target
