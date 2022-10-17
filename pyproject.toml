@@ -30,6 +30,9 @@ pyproject-flake8 = "^5.0.4.post1"
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
+[tool.poetry.scripts]
+mcmng = "mcmng.__main__:cli"
+
 [tool.black]
 line-length = 100
 target_version = ["py310"]
