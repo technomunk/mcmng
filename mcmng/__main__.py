@@ -3,7 +3,7 @@ Command line based [minecraft](https://www.minecraft.net/en-us)
 server manager for individual admins.
 """
 from datetime import datetime, timedelta
-from logging import getLogger
+from logging import DEBUG, getLogger
 from os import makedirs
 from time import sleep
 
@@ -114,4 +114,5 @@ def _parse_address(address: str) -> tuple[str, int | None]:
 
 
 if __name__ == "__main__":
+    logger.setLevel(DEBUG)
     cli()
