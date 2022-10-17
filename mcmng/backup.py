@@ -3,6 +3,7 @@
 
 import re
 from datetime import datetime
+from functools import partial
 from os import listdir, path, remove
 from typing import Collection, Iterable
 from zipfile import ZIP_DEFLATED, ZipFile
@@ -37,21 +38,32 @@ def delete_oldest_backups(backup_dir: str, keep: int = 1) -> list[str]:
     Remove oldest backups until "keep" backups remain in provided directory.
     """
 
-    def _is_backup(filename: str) -> bool:
-        return all(
-            [
-                re.fullmatch(BACKUP_NAME_PATTERN, filename),
-                path.isfile(path.join(backup_dir, filename)),
-            ]
-        )
-
-    def _backup_age(filename: str) -> float:
-        return path.getmtime(path.join(backup_dir, filename))
-
-    backups: Iterable[str] = filter(_is_backup, listdir(backup_dir))
-    backups = sorted(backups, key=_backup_age)
+    backups: Iterable[str] = filter(partial(_is_backup, backup_dir), listdir(backup_dir))
+    backups = sorted(backups, key=partial(_backup_age, backup_dir))
 
     for filename in backups[:-keep]:
         remove(path.join(backup_dir, filename))
 
     return backups[:-keep]
+
+
+def newest_backup_time(backup_dir: str) -> datetime | None:
+    """Get the newest backup age in provided folder"""
+    backups = filter(partial(_is_backup, backup_dir), listdir(backup_dir))
+    if not backups:
+        return None
+    age = min(path.getmtime(path.join(backup_dir, filename)) for filename in backups)
+    return datetime.fromtimestamp(age)
+
+
+def _is_backup(backup_dir: str, filename: str) -> bool:
+    return all(
+        [
+            re.fullmatch(BACKUP_NAME_PATTERN, filename),
+            path.isfile(path.join(backup_dir, filename)),
+        ]
+    )
+
+
+def _backup_age(backup_dir: str, filename: str) -> float:
+    return path.getmtime(path.join(backup_dir, filename))
